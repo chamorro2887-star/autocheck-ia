@@ -334,6 +334,7 @@ export function generateMockResult(data: CarFormData): AnalysisResult {
   let argumentoPrincipal = 'Solicita documentación y una inspección antes de cerrar el precio.'; const argumentos: string[] = [];
   if (hasPrecio) {
     let base = hasPrecioReferencia && precioReferencia > 0 ? Math.min(precio, precioReferencia) : precio;
+   const age = hasAnio ? Math.max(0, currentYear - anio) : 0;
     let reduction = 0.04; if (hasKm && km > 180000) reduction += 0.04; if (hasKm && km > 250000) reduction += 0.05; if (hasAnio && age > 10) reduction += 0.02; if (datosNoDisponibles >= 7) reduction += 0.03; if (inconsistencias.some(x => x.includes('por encima'))) reduction += 0.04;
     reduction = clamp(reduction, 0.03, 0.20); descuentoSugerido = Math.round(reduction * 100); precioObjetivo = Math.round((base * (1-reduction))/100)*100; precioMaximo = Math.round((base * (1-reduction/2))/100)*100;
     if (hasKm && km > 250000) argumentos.push(`Kilometraje elevado (${km.toLocaleString('es-ES')} km): úsalo como argumento para ajustar el precio.`);
