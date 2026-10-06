@@ -49,7 +49,56 @@ export default function InputScreen({ onBack, onAnalyze }: InputScreenProps) {
     }
 
     setUrlStatus('loading');
-    setTimeout(() => setUrlStatus('failed'), 900);
+setFormError('');
+
+try {
+  const target = form.url.trim();
+
+  if (!/^https?:\/\//i.test(target)) {
+    throw new Error('Enlace no válido');
+  }
+
+  const apiBase = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+
+  const response = await fetch(`${apiBase}/fetch-ad`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({ url: target }),
+  });
+
+  const payload = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new Error(payload?.error || `Error HTTP ${response.status}`);
+  }
+
+  const content = typeof payload?.text === 'string' ? payload.text : '';
+
+  if (!content.trim()) {
+    throw new Error('No se pudo leer el anuncio');
+  }
+
+  const parsed = parseAdText(content, {
+    ...form,
+    textoAnuncio: content,
+    metodo: 'url',
+  });
+
+  setForm(parsed);
+  setUrlStatus('idle');
+  setMetodo('manual');
+  setFormError('');
+} catch (error) {
+  setUrlStatus('failed');
+  setFormError(
+    error instanceof Error
+      ? error.message
+      : 'No se pudo leer el anuncio'
+  );
+}
   };
 
   const handleAnalyzePastedText = () => {
