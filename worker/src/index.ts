@@ -5,8 +5,8 @@ interface Env {
 
 const jsonHeaders = (env: Env, extra: Record<string, string> = {}) => ({
   'Content-Type': 'application/json; charset=utf-8',
-  'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
-  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type, Accept',
   'Access-Control-Allow-Headers': 'Content-Type',
   'Access-Control-Max-Age': '86400',
   ...extra,
