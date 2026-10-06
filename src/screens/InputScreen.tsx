@@ -35,7 +35,7 @@ export default function InputScreen({ onBack, onAnalyze }: InputScreenProps) {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleUrlSubmit = (e: React.FormEvent) => {
+  const handleUrlSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.url.trim() && !form.textoAnuncio.trim()) return;
 
