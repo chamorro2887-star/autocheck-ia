@@ -347,6 +347,11 @@ try {
                   <p className="text-white font-bold text-base mb-1">No hemos podido obtener todos los datos del anuncio.</p>
                   <p className="text-ink-400 text-sm">El enlace no se puede leer automáticamente desde este navegador. Puedes pegar el texto del anuncio y AutoCheck IA extraerá los datos principales.</p>
                 </div>
+                {formError && (
+  <p className="text-xs text-danger-300 mt-3 break-words">
+    Motivo: {formError}
+  </p>
+)}
 
                 {form.textoAnuncio.trim() && (
                   <button
